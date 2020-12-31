@@ -1,0 +1,76 @@
+Prblem link : https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/practice-problems/algorithm/monk-and-the-islands/description/
+
+Basically do bfs and find shortest path from start node i.e. 1 to last node i.e. n.
+
+
+
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+
+
+// Write your code here
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+
+void bfs(int node,vector<int>adj[],vector<bool>&vis,long long int dis[]){
+
+    
+    dis[node] = 0;
+    vis[node] = 1;
+
+    queue<int> q;
+    q.push(node);
+    //cout<<q.size()<<" ";
+    
+    while(q.size() > 0){
+
+        int t = q.front();
+        q.pop();
+     //   cout<<q.size()<<" ";
+        for(auto child: adj[t]){
+            if(vis[child] == false){
+                q.push(child);
+                dis[child] =(long long) (dis[t] + 1);
+                vis[child] = true;
+            }
+        }
+
+    }
+    return;
+}
+
+
+int main(){
+
+	int t;
+	cin>>t;
+	while(t--){
+
+		int n,m,u,v;
+		cin>>n>>m;
+
+		vector<int> adj[10002];
+
+		while(m--){
+
+			cin>>u>>v;
+
+			adj[u-1].pb(v-1);
+			adj[v-1].pb(u-1);
+		}
+
+        long long int dis[10002] = {0};
+        vector<bool> vis(10004); 
+
+        bfs(0,adj,vis,dis);
+
+        cout<<dis[n-1];
+        cout<<"\n";
+
+	}
+	return 0;
+}
