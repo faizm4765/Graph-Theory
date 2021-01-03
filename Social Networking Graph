@@ -1,0 +1,73 @@
+https://www.hackerearth.com/practice/algorithms/graphs/breadth-first-search/practice-problems/algorithm/social-networking-graph/submissions/
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+
+#include<bits/stdc++.h>
+using namespace std;
+
+#define pb push_back
+
+vector<int> adj[1000006];
+int vis[1000006];
+vector<int>dis(1000006);
+
+void bfs(int node){
+
+    vis[node] = 1;
+    dis[node] = 0;
+
+    queue<int> q;
+    q.push(node);
+
+    while(!q.empty()){
+
+        int t = q.front();
+        q.pop();
+
+        for(int child:adj[t]){
+            if(vis[child] == 0){
+                vis[child] = 1;
+                dis[child] = dis[t] + 1;
+                q.push(child);
+            }
+        }
+    }
+}
+
+
+int main(){
+
+        int n,e,q;
+        cin>>n>>e;
+
+        for(int i=0;i<n;i++){
+            adj[i].clear();
+            //vis[i] = 0;
+        }
+        while(e--){
+            int u,v;
+            cin>>u>>v;
+
+            adj[u].pb(v);
+            adj[v].pb(u);
+        }
+        cin>>q;
+        while(q--){
+            int start,distance,cnt = 0;
+            cin>>start>>distance;
+            std::fill(vis, vis+n, 0);
+            dis.clear();
+            bfs(start);
+            
+            for(int i=0;i<n;i++){
+               // cout<<dis[i]<<" ";
+                if(dis[i] == distance)
+                    cnt++;
+            }
+            cout<<cnt;
+            cout<<"\n";
+        }
+    
+return 0;
+}
