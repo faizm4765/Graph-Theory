@@ -1,0 +1,82 @@
+You are given 2 integers N and M , N is the number of vertices, M is the number of edges. 
+You'll also be given ai and bi where ai and bi represents an edge from a vertex ai to a vertex bi.
+
+You have to find the minimum number of edges you have to reverse in order to have atleast one path from vertex 1 to N, 
+where the vertices are numbered from 1 to N.
+
+Input Format
+First line contains two space separated integers,N and M. Then M lines follow, each line has 2 space separated integers ai and bi.
+
+Output Format
+Print the minimum number of edges we need to revert. If there is no way of having at least one path from 1 to N, print -1.
+
+Example:
+
+Input:
+7 7
+1 2 
+3 2
+3 4
+7 4
+6 2
+5 6
+7 5
+
+Output:
+2
+
+---------------------------------------------------------------------------------------------------------------------------
+
+#define pt pair<int,int> 
+#define pb push_back
+
+#include<bits/stdc++.h>
+using namespace std;
+
+int main(){
+    
+    int m,n;
+    cin>>n>>m;  // vertices and edges input
+    
+    vector<vector<int>>edges;
+    int vis[n] = {0};
+    int i,j,u,v,f = -1;
+    
+    for(i = 0;i < m;i++){
+        cin>>u>>v;
+        edges.push_back({u,v,0});   //constructing the graph
+        edges.push_back({v,u,1});
+    }
+    
+    deque<pair<int,int>> q;
+    q.push_front({1,0});
+    
+    while(!q.empty()){
+        pt t = q.front();
+        q.pop_front();
+        
+        int node = t.first;        
+        if(vis[node])
+            continue;
+
+        vis[node] = 1;
+        if(node == n){
+            f = t.second;
+            break;
+        }
+        for(i = 0;i < (m * 2);i++){
+            if(edges[i][0] == node){
+                if(vis[edges[i][1]] == false){
+                    if(edges[i][2] == 0){
+                        q.push_front({edges[i][1],t.second});
+                    }
+                    else{
+                        q.push_back({edges[i][1],t.second + edges[i][2]});
+                    }
+                }
+            }
+        }
+    }
+    cout<<f<<"\n"; 
+    return 0;
+}
